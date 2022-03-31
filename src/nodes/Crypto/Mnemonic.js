@@ -23,19 +23,25 @@ Mnemonic.prototype.onExecute = function() {
         this.onAction()
     }
   }
+  ///////////////////////////////////////////////////////////////////////
   let optionalIndex = this.getInputData(1)
   if(typeof optionalIndex != "undefined" && optionalIndex!=this.properties.index){
     this.properties.index = optionalIndex
     this.generatePrivateKey()
   }
-  this.setOutputData(0,this.value)
+  
+  this.setOutputData(0,this.value)        // this.value is the private key
   this.setOutputData(1,this.mnemonic)
 };
+
+//Random create mnemonic from "BIP39"
 Mnemonic.prototype.onAction = async function(name){
   console.log("Generating Mnemonic...")
   this.mnemonic = require("bip39").generateMnemonic()
   this.generatePrivateKey()
 }
+
+//create privatekey
 Mnemonic.prototype.generatePrivateKey = async function(){
   try{
     const seed = await bip39.mnemonicToSeed(this.mnemonic)
